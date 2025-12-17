@@ -1,0 +1,29 @@
+{
+  "name": "multimedia-app",
+  "version": "1.0.0",
+  "description": "Aplicació isomòrfica multimèdia amb Jocs, Música i Clips",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "multimedia",
+    "games",
+    "music",
+    "clips",
+    "lowdb"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.22.1",
+    "lowdb": "^6.1.1",
+    "multer": "^1.4.5-lts.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicación Multimedia</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="bg-slate-900 text-white">
+    <!-- Navegación -->
+    <nav class="nav-fixed bg-slate-800/80 border-b border-slate-700/50 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                        <i class="fas fa-photo-video mr-2"></i>MultimediaApp
+                    </h1>
+                </div>
+                <!-- Navegación principal -->
+                <div class="hidden md:block">
+                    <div class="flex space-x-4">
+                        <button data-page="home" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-700/50 transition-colors">
+                            <i class="fas fa-home mr-2"></i>Inicio
+                        </button>
+                        <button data-page="games" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-700/50 transition-colors">
+                            <i class="fas fa-gamepad mr-2"></i>Juegos
+                        </button>
+                        <button data-page="music" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-700/50 transition-colors">
+                            <i class="fas fa-music mr-2"></i>Música
+                        </button>
+                        <button data-page="clips" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-700/50 transition-colors">
+                            <i class="fas fa-video mr-2"></i>Clips
+                        </button>
+                        <button data-page="content" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-700/50 transition-colors">
+                            <i class="fas fa-cog mr-2"></i>Gestión
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Indicador de carga -->
+                <div id="loadingIndicator" class="hidden">
+                    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navegación móvil -->
+        <div class="md:hidden border-t border-slate-700/50">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <button data-page="home" class="nav-link-mobile w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-slate-700/50">
+                    <i class="fas fa-home mr-2 w-6"></i>Inicio
+                </button>
+                <button data-page="games" class="nav-link-mobile w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-slate-700/50">
+                    <i class="fas fa-gamepad mr-2 w-6"></i>Juegos
+                </button>
+                <button data-page="music" class="nav-link-mobile w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-slate-700/50">
+                    <i class="fas fa-music mr-2 w-6"></i>Música
+                </button>
+                <button data-page="clips" class="nav-link-mobile w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-slate-700/50">
+                    <i class="fas fa-video mr-2 w-6"></i>Clips
+                </button>
+                <button data-page="content" class="nav-link-mobile w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-slate-700/50">
+                    <i class="fas fa-cog mr-2 w-6"></i>Gestión
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenedor principal de páginas -->
+    <div id="pageContainer" class="page-container">
+        <!-- El contenido se carga dinámicamente aquí -->
+        <div class="p-8 text-center">
+            <div class="animate-pulse">
+                <div class="h-8 bg-slate-700 rounded w-64 mx-auto mb-4"></div>
+                <div class="h-4 bg-slate-700 rounded w-48 mx-auto"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script principal -->
+    <script src="/app.js"></script>
+    
+    <script>
+        // Actualizar navegación activa
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('.nav-link, .nav-link-mobile') || e.target.closest('.nav-link, .nav-link-mobile')) {
+                document.querySelectorAll('.nav-link, .nav-link-mobile').forEach(link => {
+                    link.classList.remove('bg-blue-600', 'text-white');
+                    link.classList.add('text-slate-300');
+                });
+                const clickedLink = e.target.closest('.nav-link, .nav-link-mobile') || e.target;
+                clickedLink.classList.remove('text-slate-300');
+                clickedLink.classList.add('bg-blue-600', 'text-white');
+            }
+        });
+    </script>
+</body>
+</html>
