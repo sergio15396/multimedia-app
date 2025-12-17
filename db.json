@@ -1,0 +1,274 @@
+{
+  "games": [
+    {
+      "id": 1,
+      "title": "The Legend of Zelda: Breath of the Wild",
+      "status": "Completado",
+      "rating": 4.8,
+      "notes": "Un juego increíble de mundo abierto",
+      "trailerUrl": "https://www.youtube.com/watch?v=1rPxiXXxftE",
+      "launchDate": "2017-03-03",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/c/c6/The_Legend_of_Zelda_Breath_of_the_Wild.jpg/250px-The_Legend_of_Zelda_Breath_of_the_Wild.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Elden Ring",
+      "status": "Jugando",
+      "rating": 4.9,
+      "notes": "Desafiante y hermoso",
+      "trailerUrl": "https://www.youtube.com/watch?v=E3Huy2cdih0",
+      "launchDate": "2022-02-25",
+      "imageUrl": "https://image.api.playstation.com/vulcan/img/rnd/202111/0506/hcFeWRVGHYK72uOw6Mn6f4Ms.jpg"
+    },
+    {
+      "id": 3,
+      "title": "God of War Ragnarök",
+      "status": "Completado",
+      "rating": 4.7,
+      "notes": "Narrativa épica y combates intensos",
+      "trailerUrl": "https://www.youtube.com/watch?v=hfJ4Km46A-0",
+      "launchDate": "2022-11-09",
+      "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co5s5v.jpg"
+    },
+    {
+      "id": 4,
+      "title": "Red Dead Redemption 2",
+      "status": "Completado",
+      "rating": 4.9,
+      "notes": "Historia profunda y mundo muy vivo",
+      "trailerUrl": "https://www.youtube.com/watch?v=eaW0tYpxyp0",
+      "launchDate": "2018-10-26",
+      "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1q1f.jpg"
+    },
+    {
+      "id": 5,
+      "title": "The Witcher 3: Wild Hunt",
+      "status": "Completado",
+      "rating": 4.8,
+      "notes": "RPG de referencia",
+      "trailerUrl": "https://www.youtube.com/watch?v=c0i88t0Kacs",
+      "launchDate": "2015-05-19",
+      "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1wyy.jpg"
+    },
+    {
+      "id": 6,
+      "title": "Hollow Knight",
+      "status": "Completado",
+      "rating": 4.6,
+      "notes": "Metroidvania desafiante y artístico",
+      "trailerUrl": "https://www.youtube.com/watch?v=UAO2urG23S4",
+      "launchDate": "2017-02-24",
+      "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rgi.jpg"
+    },
+    {
+      "id": 7,
+      "title": "Cyberpunk 2077",
+      "status": "Pendiente",
+      "rating": 4,
+      "notes": "Mejoró mucho con actualizaciones",
+      "trailerUrl": "https://www.youtube.com/watch?v=qIcTM8WXFjk",
+      "launchDate": "2020-12-10",
+      "imageUrl": "https://image.api.playstation.com/vulcan/ap/rnd/202008/0416/6Bo40lnWU0BhgrOUm7Cb6by3.png"
+    },
+    {
+      "id": 8,
+      "title": "Dark Souls III",
+      "status": "Completado",
+      "rating": 4.7,
+      "notes": "Difícil pero gratificante",
+      "trailerUrl": "https://www.youtube.com/watch?v=0KQ3g9lY9FI",
+      "launchDate": "2016-03-24",
+      "imageUrl": "https://puregaming.es/wp-content/uploads/2018/11/dark-souls-3.jpg"
+    },
+    {
+      "id": 9,
+      "title": "Minecraft",
+      "status": "Jugando",
+      "rating": 4.5,
+      "notes": "Creatividad infinita",
+      "trailerUrl": "https://www.youtube.com/watch?v=MmB9b5njVbA",
+      "launchDate": "2011-11-18",
+      "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co49x5.jpg"
+    },
+    {
+      "id": 10,
+      "title": "Spider-Man: Miles Morales",
+      "status": "Completado",
+      "rating": 4.6,
+      "notes": "Acción fluida y gran soundtrack",
+      "trailerUrl": "https://www.youtube.com/watch?v=gHzuHo80U2M",
+      "launchDate": "2020-11-12",
+      "imageUrl": "https://cdn1.epicgames.com/offer/f696430be718494fac1d6542cfb22542/EGS_MarvelsSpiderManMilesMorales_InsomniacGamesNixxesSoftware_S2_1200x1600-58989e7116de3f70a2ae6ea56ee202c6"
+    }
+  ],
+  "songs": [
+    {
+      "id": 1,
+      "title": "Do I Wanna Know?",
+      "artist": "Arctic Monkeys",
+      "youtubeUrl": "https://www.youtube.com/watch?v=bpOSxM0rNPM",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 2,
+      "title": "R U Mine?",
+      "artist": "Arctic Monkeys",
+      "youtubeUrl": "https://www.youtube.com/watch?v=ngzC_8zqInk",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 3,
+      "title": "505",
+      "artist": "Arctic Monkeys",
+      "youtubeUrl": "https://www.youtube.com/watch?v=qU9mHegkTc4",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 4,
+      "title": "Uprising",
+      "artist": "Muse",
+      "youtubeUrl": "https://www.youtube.com/watch?v=w8KQmps-Sog",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 5,
+      "title": "Hysteria",
+      "artist": "Muse",
+      "youtubeUrl": "https://www.youtube.com/watch?v=3dm_5qWWDV8",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 6,
+      "title": "Starlight",
+      "artist": "Muse",
+      "youtubeUrl": "https://www.youtube.com/watch?v=Pgum6OT_VH8",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 7,
+      "title": "Feel Good Inc.",
+      "artist": "Gorillaz",
+      "youtubeUrl": "https://www.youtube.com/watch?v=HyHNuVaZJ-k",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 8,
+      "title": "Clint Eastwood",
+      "artist": "Gorillaz",
+      "youtubeUrl": "https://www.youtube.com/watch?v=1V_xRb0x9aw",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 9,
+      "title": "DARE",
+      "artist": "Gorillaz",
+      "youtubeUrl": "https://www.youtube.com/watch?v=uAOR6ib95kQ",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 10,
+      "title": "Nightmare",
+      "artist": "Avenged Sevenfold",
+      "youtubeUrl": "https://www.youtube.com/watch?v=94bGzWyHbu0",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 11,
+      "title": "Hail to the King",
+      "artist": "Avenged Sevenfold",
+      "youtubeUrl": "https://www.youtube.com/watch?v=DelhLppPSxY",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 12,
+      "title": "Afterlife",
+      "artist": "Avenged Sevenfold",
+      "youtubeUrl": "https://www.youtube.com/watch?v=HIRNdveLnJI",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 13,
+      "title": "Just Pretend",
+      "artist": "Bad Omens",
+      "youtubeUrl": "https://www.youtube.com/watch?v=Ek0SgwWmF9w",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 14,
+      "title": "The Death of Peace of Mind",
+      "artist": "Bad Omens",
+      "youtubeUrl": "https://www.youtube.com/watch?v=ouW_RCAI0sg",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 15,
+      "title": "Like a Villain",
+      "artist": "Bad Omens",
+      "youtubeUrl": "https://www.youtube.com/watch?v=Aibxit_PpAg",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 16,
+      "title": "Can You Feel My Heart",
+      "artist": "Bring Me The Horizon",
+      "youtubeUrl": "https://www.youtube.com/watch?v=QJJYpsA5tv8",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 17,
+      "title": "Throne",
+      "artist": "Bring Me The Horizon",
+      "youtubeUrl": "https://www.youtube.com/watch?v=Ow_qI_F2ZJI",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 18,
+      "title": "Drown",
+      "artist": "Bring Me The Horizon",
+      "youtubeUrl": "https://www.youtube.com/watch?v=TkV5709EG5M",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 19,
+      "title": "Seven Nation Army",
+      "artist": "The White Stripes",
+      "youtubeUrl": "https://www.youtube.com/watch?v=0J2QdDbelmY",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 20,
+      "title": "Radioactive",
+      "artist": "Imagine Dragons",
+      "youtubeUrl": "https://www.youtube.com/watch?v=ktvTqknDobU",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 21,
+      "title": "My Curse",
+      "artist": "Killswitch Engage",
+      "youtubeUrl": "https://www.youtube.com/watch?v=iPW9AbRMwFU",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 22,
+      "title": "Numb",
+      "artist": "Linkin Park",
+      "youtubeUrl": "https://www.youtube.com/watch?v=kXYiU_JCYtU",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 23,
+      "title": "The Pretender",
+      "artist": "Foo Fighters",
+      "youtubeUrl": "https://www.youtube.com/watch?v=SBjQ9tuuTJQ",
+      "coverImageUrl": ""
+    },
+    {
+      "id": 24,
+      "title": "Duality",
+      "artist": "Slipknot",
+      "youtubeUrl": "https://www.youtube.com/watch?v=6fVE8kSM43I",
+      "coverImageUrl": ""
+    }
+  ]
+}

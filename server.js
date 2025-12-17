@@ -22,6 +22,76 @@ const db = new Low(adapter, {
 // Inicialitzar la base de dades
 await db.read();
 
+// Si la base de datos está vacía o no tiene la estructura correcta, inicializarla
+if (!db.data || !db.data.games || !db.data.songs || !db.data.clips) {
+  db.data = {
+    games: [],
+    songs: [],
+    clips: [],
+  };
+  await db.write();
+}
+
+// Asegurar que los arrays existan
+if (!Array.isArray(db.data.games)) db.data.games = [];
+if (!Array.isArray(db.data.songs)) db.data.songs = [];
+if (!Array.isArray(db.data.clips)) db.data.clips = [];
+
+// Función para inicializar con datos de ejemplo si la base de datos está vacía
+const initializeWithSampleData = async () => {
+  if (db.data.games.length === 0 && db.data.songs.length === 0 && db.data.clips.length === 0) {
+    console.log("📦 Inicializando base de datos con datos de ejemplo...");
+    
+    // Datos de ejemplo para juegos
+    db.data.games = [
+      {
+        id: Date.now(),
+        title: "The Legend of Zelda: Breath of the Wild",
+        status: "Completado",
+        rating: 4.8,
+        notes: "Un juego increíble de mundo abierto",
+        trailerUrl: "https://www.youtube.com/watch?v=1rPxiXXxftE",
+        launchDate: "2017-03-03",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/en/thumb/c/c6/The_Legend_of_Zelda_Breath_of_the_Wild.jpg/250px-The_Legend_of_Zelda_Breath_of_the_Wild.jpg"
+      },
+      {
+        id: Date.now() + 1,
+        title: "Elden Ring",
+        status: "Jugando",
+        rating: 4.9,
+        notes: "Desafiante y hermoso",
+        trailerUrl: "https://www.youtube.com/watch?v=E3Huy2cdih0",
+        launchDate: "2022-02-25",
+        imageUrl: "https://image.api.playstation.com/vulcan/img/rnd/202111/0506/hcFeWRVGHYK72uOw6Mn6f4Ms.jpg"
+      }
+    ];
+    
+    // Datos de ejemplo para canciones
+    db.data.songs = [
+      {
+        id: Date.now() + 2,
+        title: "Do I Wanna Know?",
+        artist: "Arctic Monkeys",
+        youtubeUrl: "https://www.youtube.com/watch?v=bpOSxM0rNPM",
+        coverImageUrl: ""
+      },
+      {
+        id: Date.now() + 3,
+        title: "R U Mine?",
+        artist: "Arctic Monkeys",
+        youtubeUrl: "https://www.youtube.com/watch?v=ngzC_8zqInk",
+        coverImageUrl: ""
+      }
+    ];
+    
+    await db.write();
+    console.log("✅ Base de datos inicializada con datos de ejemplo");
+  }
+};
+
+// Inicializar con datos de ejemplo si está vacía
+await initializeWithSampleData();
+
 // Configuració de multer per pujar fitxers
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -573,4 +643,6 @@ app.listen(PORT, () => {
   console.log(`🎵 Música: http://localhost:${PORT}/music`);
   console.log(`🎬 Clips: http://localhost:${PORT}/clips`);
   console.log(`📊 Dashboard: http://localhost:${PORT}/dashboard`);
+  console.log(`📁 Base de datos: ${file}`);
+  console.log(`📊 Juegos: ${db.data.games.length}, Canciones: ${db.data.songs.length}, Clips: ${db.data.clips.length}`);
 });
