@@ -199,7 +199,7 @@ class MultimediaApp {
                 if (gameCard) {
                     const gameId = gameCard.getAttribute('data-game-id');
                     if (gameId) {
-                        await this.showGameDetails(gameId);
+                    await this.showGameDetails(gameId);
                     }
                 }
             });
@@ -493,7 +493,7 @@ class MultimediaApp {
             };
             
             const closeModal = () => {
-                modal.remove();
+                    modal.remove();
                 document.removeEventListener('keydown', handleEscape);
             };
             
@@ -551,7 +551,7 @@ class MultimediaApp {
         };
         
         const closeModal = () => {
-            modal.remove();
+                modal.remove();
             document.removeEventListener('keydown', handleEscape);
         };
         
@@ -602,7 +602,7 @@ class MultimediaApp {
         };
         
         const closeModal = () => {
-            modal.remove();
+                modal.remove();
             document.removeEventListener('keydown', handleEscape);
         };
         
@@ -840,9 +840,9 @@ class MultimediaApp {
             } else {
                 // Crear nuevo juego
                 response = await fetch(`${this.API_URL}/games`, {
-                    method: 'POST',
+                method: 'POST',
                     body: formData
-                });
+            });
             }
             
             if (response.ok) {
@@ -889,12 +889,12 @@ class MultimediaApp {
             } else {
                 // Crear nueva canción
                 response = await fetch(`${this.API_URL}/songs`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
             }
             
             if (response.ok) {
@@ -934,9 +934,9 @@ class MultimediaApp {
             } else {
                 // Crear nuevo clip
                 response = await fetch(`${this.API_URL}/clips`, {
-                    method: 'POST',
-                    body: formData
-                });
+                method: 'POST',
+                body: formData
+            });
             }
             
             if (response.ok) {
@@ -1133,7 +1133,7 @@ class MultimediaApp {
         } catch (error) {
             console.error('Error loading song for edit:', error);
             alert('Error al cargar la canción para editar');
-        }
+    }
     }
 
     async editClip(id) {

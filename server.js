@@ -183,67 +183,116 @@ app.get("/api/games/:id", async (req, res) => {
 });
 
 app.post("/api/games", upload.single("image"), async (req, res) => {
-  await db.read();
+  try {
+    await db.read();
+    console.log(`📝 POST /api/games - Juegos antes: ${db.data.games.length}`);
 
-  const gameData = {
-    id: Date.now(),
-    title: req.body.title,
-    status: req.body.status || "Jugando",
-    rating: req.body.rating ? parseFloat(req.body.rating) : null,
-    notes: req.body.notes || "",
-    trailerUrl: req.body.trailerUrl || "",
-    launchDate: req.body.launchDate || null,
-    imageUrl: req.file
-      ? `/uploads/games/${req.file.filename}`
-      : req.body.imageUrl || "",
-  };
+    const gameData = {
+      id: Date.now(),
+      title: req.body.title,
+      status: req.body.status || "Jugando",
+      rating: req.body.rating ? parseFloat(req.body.rating) : null,
+      notes: req.body.notes || "",
+      trailerUrl: req.body.trailerUrl || "",
+      launchDate: req.body.launchDate || null,
+      imageUrl: req.file
+        ? `/uploads/games/${req.file.filename}`
+        : req.body.imageUrl || "",
+    };
 
-  db.data.games.push(gameData);
-  await db.write();
-  res.status(201).json(gameData);
+    db.data.games.push(gameData);
+    
+    // Guardar en db.json
+    await db.write();
+    
+    // Verificar que se guardó correctamente
+    const fileExists = fs.existsSync(file);
+    if (fileExists) {
+      const fileStats = fs.statSync(file);
+      console.log(`✅ db.json actualizado - Tamaño: ${fileStats.size} bytes, Modificado: ${fileStats.mtime}`);
+    } else {
+      console.warn(`⚠️ db.json no existe después de escribir`);
+    }
+    
+    console.log(`✅ Juego guardado - ID: ${gameData.id}, Título: ${gameData.title}`);
+    console.log(`📊 Total de juegos después de guardar: ${db.data.games.length}`);
+    
+    res.status(201).json(gameData);
+  } catch (error) {
+    console.error("❌ Error al guardar juego:", error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.put("/api/games/:id", upload.single("image"), async (req, res) => {
-  await db.read();
-  const gameId = parseInt(req.params.id);
-  const gameIndex = db.data.games.findIndex((g) => g.id === gameId);
+  try {
+    await db.read();
+    const gameId = parseInt(req.params.id);
+    const gameIndex = db.data.games.findIndex((g) => g.id === gameId);
 
-  if (gameIndex === -1) {
-    return res.status(404).json({ error: "Juego no encontrado" });
+    if (gameIndex === -1) {
+      return res.status(404).json({ error: "Juego no encontrado" });
+    }
+
+    const updatedGame = {
+      ...db.data.games[gameIndex],
+      title: req.body.title || db.data.games[gameIndex].title,
+      status: req.body.status || db.data.games[gameIndex].status,
+      rating: req.body.rating
+        ? parseFloat(req.body.rating)
+        : db.data.games[gameIndex].rating,
+      notes: req.body.notes || db.data.games[gameIndex].notes,
+      trailerUrl: req.body.trailerUrl || db.data.games[gameIndex].trailerUrl,
+      launchDate: req.body.launchDate || db.data.games[gameIndex].launchDate,
+      imageUrl: req.file
+        ? `/uploads/games/${req.file.filename}`
+        : req.body.imageUrl || db.data.games[gameIndex].imageUrl,
+    };
+
+    db.data.games[gameIndex] = updatedGame;
+    await db.write();
+    
+    const fileExists = fs.existsSync(file);
+    if (fileExists) {
+      const fileStats = fs.statSync(file);
+      console.log(`✅ db.json actualizado (PUT) - Tamaño: ${fileStats.size} bytes`);
+    }
+    
+    console.log(`✅ Juego actualizado - ID: ${gameId}, Título: ${updatedGame.title}`);
+    res.json(updatedGame);
+  } catch (error) {
+    console.error("❌ Error al actualizar juego:", error);
+    res.status(500).json({ error: error.message });
   }
-
-  const updatedGame = {
-    ...db.data.games[gameIndex],
-    title: req.body.title || db.data.games[gameIndex].title,
-    status: req.body.status || db.data.games[gameIndex].status,
-    rating: req.body.rating
-      ? parseFloat(req.body.rating)
-      : db.data.games[gameIndex].rating,
-    notes: req.body.notes || db.data.games[gameIndex].notes,
-    trailerUrl: req.body.trailerUrl || db.data.games[gameIndex].trailerUrl,
-    launchDate: req.body.launchDate || db.data.games[gameIndex].launchDate,
-    imageUrl: req.file
-      ? `/uploads/games/${req.file.filename}`
-      : req.body.imageUrl || db.data.games[gameIndex].imageUrl,
-  };
-
-  db.data.games[gameIndex] = updatedGame;
-  await db.write();
-  res.json(updatedGame);
 });
 
 app.delete("/api/games/:id", async (req, res) => {
-  await db.read();
-  const gameId = parseInt(req.params.id);
-  const gameIndex = db.data.games.findIndex((g) => g.id === gameId);
+  try {
+    await db.read();
+    const gameId = parseInt(req.params.id);
+    const gameIndex = db.data.games.findIndex((g) => g.id === gameId);
 
-  if (gameIndex === -1) {
-    return res.status(404).json({ error: "Juego no encontrado" });
+    if (gameIndex === -1) {
+      return res.status(404).json({ error: "Juego no encontrado" });
+    }
+
+    const deletedGame = db.data.games[gameIndex];
+    db.data.games.splice(gameIndex, 1);
+    await db.write();
+    
+    const fileExists = fs.existsSync(file);
+    if (fileExists) {
+      const fileStats = fs.statSync(file);
+      console.log(`✅ db.json actualizado (DELETE) - Tamaño: ${fileStats.size} bytes`);
+    }
+    
+    console.log(`✅ Juego eliminado - ID: ${gameId}, Título: ${deletedGame.title}`);
+    console.log(`📊 Total de juegos después de eliminar: ${db.data.games.length}`);
+    res.status(204).send();
+  } catch (error) {
+    console.error("❌ Error al eliminar juego:", error);
+    res.status(500).json({ error: error.message });
   }
-
-  db.data.games.splice(gameIndex, 1);
-  await db.write();
-  res.status(204).send();
 });
 
 // API per a Música
@@ -288,19 +337,36 @@ app.get("/api/songs/:id", async (req, res) => {
 });
 
 app.post("/api/songs", async (req, res) => {
-  await db.read();
+  try {
+    await db.read();
+    console.log(`📝 POST /api/songs - Canciones antes: ${db.data.songs.length}`);
 
-  const songData = {
-    id: Date.now(),
-    title: req.body.title,
-    artist: req.body.artist || "",
-    youtubeUrl: req.body.youtubeUrl,
-    coverImageUrl: req.body.coverImageUrl || "",
-  };
+    const songData = {
+      id: Date.now(),
+      title: req.body.title,
+      artist: req.body.artist || "",
+      youtubeUrl: req.body.youtubeUrl,
+      coverImageUrl: req.body.coverImageUrl || "",
+    };
 
-  db.data.songs.push(songData);
-  await db.write();
-  res.status(201).json(songData);
+    db.data.songs.push(songData);
+    await db.write();
+    
+    // Verificar que se guardó
+    const fileExists = fs.existsSync(file);
+    if (fileExists) {
+      const fileStats = fs.statSync(file);
+      console.log(`✅ db.json actualizado - Tamaño: ${fileStats.size} bytes`);
+    }
+    
+    console.log(`✅ Canción guardada - ID: ${songData.id}, Título: ${songData.title}`);
+    console.log(`📊 Total de canciones después de guardar: ${db.data.songs.length}`);
+    
+    res.status(201).json(songData);
+  } catch (error) {
+    console.error("❌ Error al guardar canción:", error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.put("/api/songs/:id", async (req, res) => {
@@ -353,23 +419,40 @@ app.post(
     { name: "clip", maxCount: 1 },
   ]),
   async (req, res) => {
-    await db.read();
+    try {
+      await db.read();
+      console.log(`📝 POST /api/clips - Clips antes: ${db.data.clips.length}`);
 
-    const clipData = {
-      id: Date.now(),
-      title: req.body.title,
-      description: req.body.description || "",
-      thumbnailUrl: req.files?.thumbnail
-        ? `/uploads/clips/thumbnails/${req.files.thumbnail[0].filename}`
-        : "",
-      videoUrl: req.files?.clip
-        ? `/uploads/clips/videos/${req.files.clip[0].filename}`
-        : "",
-    };
+      const clipData = {
+        id: Date.now(),
+        title: req.body.title,
+        description: req.body.description || "",
+        thumbnailUrl: req.files?.thumbnail
+          ? `/uploads/clips/thumbnails/${req.files.thumbnail[0].filename}`
+          : "",
+        videoUrl: req.files?.clip
+          ? `/uploads/clips/videos/${req.files.clip[0].filename}`
+          : "",
+      };
 
-    db.data.clips.push(clipData);
-    await db.write();
-    res.status(201).json(clipData);
+      db.data.clips.push(clipData);
+      await db.write();
+      
+      // Verificar que se guardó
+      const fileExists = fs.existsSync(file);
+      if (fileExists) {
+        const fileStats = fs.statSync(file);
+        console.log(`✅ db.json actualizado - Tamaño: ${fileStats.size} bytes`);
+      }
+      
+      console.log(`✅ Clip guardado - ID: ${clipData.id}, Título: ${clipData.title}`);
+      console.log(`📊 Total de clips después de guardar: ${db.data.clips.length}`);
+      
+      res.status(201).json(clipData);
+    } catch (error) {
+      console.error("❌ Error al guardar clip:", error);
+      res.status(500).json({ error: error.message });
+    }
   }
 );
 
