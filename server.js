@@ -5,6 +5,7 @@ import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
+import fs from "fs";
 
 // Configurar __dirname per a ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -20,10 +21,17 @@ const db = new Low(adapter, {
 });
 
 // Inicialitzar la base de dades
-await db.read();
+try {
+  await db.read();
+  console.log(`📖 Base de datos leída desde: ${file}`);
+  console.log(`📊 Estado inicial - Juegos: ${db.data?.games?.length || 0}, Canciones: ${db.data?.songs?.length || 0}, Clips: ${db.data?.clips?.length || 0}`);
+} catch (error) {
+  console.error("❌ Error al leer la base de datos:", error);
+}
 
-// Si la base de datos está vacía o no tiene la estructura correcta, inicializarla
-if (!db.data || !db.data.games || !db.data.songs || !db.data.clips) {
+// Si la base de datos no existe o está vacía, inicializarla
+if (!db.data) {
+  console.log("⚠️ db.data es null/undefined, inicializando...");
   db.data = {
     games: [],
     songs: [],
@@ -32,65 +40,25 @@ if (!db.data || !db.data.games || !db.data.songs || !db.data.clips) {
   await db.write();
 }
 
-// Asegurar que los arrays existan
-if (!Array.isArray(db.data.games)) db.data.games = [];
-if (!Array.isArray(db.data.songs)) db.data.songs = [];
-if (!Array.isArray(db.data.clips)) db.data.clips = [];
+// Asegurar que los arrays existan (sin sobrescribir si ya tienen datos)
+if (!Array.isArray(db.data.games)) {
+  console.log("⚠️ games no es un array, inicializando...");
+  db.data.games = [];
+  await db.write();
+}
+if (!Array.isArray(db.data.songs)) {
+  console.log("⚠️ songs no es un array, inicializando...");
+  db.data.songs = [];
+  await db.write();
+}
+if (!Array.isArray(db.data.clips)) {
+  console.log("⚠️ clips no es un array, inicializando...");
+  db.data.clips = [];
+  await db.write();
+}
 
-// Función para inicializar con datos de ejemplo si la base de datos está vacía
-const initializeWithSampleData = async () => {
-  if (db.data.games.length === 0 && db.data.songs.length === 0 && db.data.clips.length === 0) {
-    console.log("📦 Inicializando base de datos con datos de ejemplo...");
-    
-    // Datos de ejemplo para juegos
-    db.data.games = [
-      {
-        id: Date.now(),
-        title: "The Legend of Zelda: Breath of the Wild",
-        status: "Completado",
-        rating: 4.8,
-        notes: "Un juego increíble de mundo abierto",
-        trailerUrl: "https://www.youtube.com/watch?v=1rPxiXXxftE",
-        launchDate: "2017-03-03",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/en/thumb/c/c6/The_Legend_of_Zelda_Breath_of_the_Wild.jpg/250px-The_Legend_of_Zelda_Breath_of_the_Wild.jpg"
-      },
-      {
-        id: Date.now() + 1,
-        title: "Elden Ring",
-        status: "Jugando",
-        rating: 4.9,
-        notes: "Desafiante y hermoso",
-        trailerUrl: "https://www.youtube.com/watch?v=E3Huy2cdih0",
-        launchDate: "2022-02-25",
-        imageUrl: "https://image.api.playstation.com/vulcan/img/rnd/202111/0506/hcFeWRVGHYK72uOw6Mn6f4Ms.jpg"
-      }
-    ];
-    
-    // Datos de ejemplo para canciones
-    db.data.songs = [
-      {
-        id: Date.now() + 2,
-        title: "Do I Wanna Know?",
-        artist: "Arctic Monkeys",
-        youtubeUrl: "https://www.youtube.com/watch?v=bpOSxM0rNPM",
-        coverImageUrl: ""
-      },
-      {
-        id: Date.now() + 3,
-        title: "R U Mine?",
-        artist: "Arctic Monkeys",
-        youtubeUrl: "https://www.youtube.com/watch?v=ngzC_8zqInk",
-        coverImageUrl: ""
-      }
-    ];
-    
-    await db.write();
-    console.log("✅ Base de datos inicializada con datos de ejemplo");
-  }
-};
-
-// Inicializar con datos de ejemplo si está vacía
-await initializeWithSampleData();
+// Log final del estado
+console.log(`✅ Base de datos inicializada - Juegos: ${db.data.games.length}, Canciones: ${db.data.songs.length}, Clips: ${db.data.clips.length}`);
 
 // Configuració de multer per pujar fitxers
 const storage = multer.diskStorage({
@@ -138,27 +106,68 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+// Endpoint de debug para verificar el estado de la base de datos
+app.get("/api/debug", async (req, res) => {
+  try {
+    await db.read();
+    const fileExists = fs.existsSync(file);
+    let fileContent = null;
+    if (fileExists) {
+      try {
+        fileContent = JSON.parse(fs.readFileSync(file, 'utf8'));
+      } catch (e) {
+        fileContent = { error: 'No se pudo leer el archivo' };
+      }
+    }
+    res.json({
+      filePath: file,
+      fileExists: fileExists,
+      __dirname: __dirname,
+      data: {
+        games: db.data?.games?.length || 0,
+        songs: db.data?.songs?.length || 0,
+        clips: db.data?.clips?.length || 0,
+      },
+      sampleGames: db.data?.games?.slice(0, 3) || [],
+      sampleSongs: db.data?.songs?.slice(0, 3) || [],
+      fileContent: fileContent ? {
+        games: fileContent.games?.length || 0,
+        songs: fileContent.songs?.length || 0,
+        clips: fileContent.clips?.length || 0,
+      } : null,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message, stack: error.stack });
+  }
+});
+
 // API per a Jocs
 app.get("/api/games", async (req, res) => {
-  await db.read();
-  const { page = 1, limit = 25 } = req.query;
-  const pageNum = parseInt(page);
-  const limitNum = parseInt(limit);
+  try {
+    await db.read();
+    console.log(`📊 GET /api/games - Juegos en DB: ${db.data?.games?.length || 0}`);
+    const { page = 1, limit = 25 } = req.query;
+    const pageNum = parseInt(page);
+    const limitNum = parseInt(limit);
 
-  const startIndex = (pageNum - 1) * limitNum;
-  const endIndex = pageNum * limitNum;
+    const startIndex = (pageNum - 1) * limitNum;
+    const endIndex = pageNum * limitNum;
 
-  const items = db.data.games.slice(startIndex, endIndex);
-  const total = db.data.games.length;
-  const totalPages = Math.ceil(total / limitNum);
+    const items = db.data.games.slice(startIndex, endIndex);
+    const total = db.data.games.length;
+    const totalPages = Math.ceil(total / limitNum);
 
-  res.json({
-    items,
-    total,
-    totalPages,
-    page: pageNum,
-    limit: limitNum,
-  });
+    res.json({
+      items,
+      total,
+      totalPages,
+      page: pageNum,
+      limit: limitNum,
+    });
+  } catch (error) {
+    console.error("❌ Error en GET /api/games:", error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.get("/api/games/:id", async (req, res) => {
@@ -239,25 +248,31 @@ app.delete("/api/games/:id", async (req, res) => {
 
 // API per a Música
 app.get("/api/songs", async (req, res) => {
-  await db.read();
-  const { page = 1, limit = 24 } = req.query;
-  const pageNum = parseInt(page);
-  const limitNum = parseInt(limit);
+  try {
+    await db.read();
+    console.log(`📊 GET /api/songs - Canciones en DB: ${db.data?.songs?.length || 0}`);
+    const { page = 1, limit = 24 } = req.query;
+    const pageNum = parseInt(page);
+    const limitNum = parseInt(limit);
 
-  const startIndex = (pageNum - 1) * limitNum;
-  const endIndex = pageNum * limitNum;
+    const startIndex = (pageNum - 1) * limitNum;
+    const endIndex = pageNum * limitNum;
 
-  const items = db.data.songs.slice(startIndex, endIndex);
-  const total = db.data.songs.length;
-  const totalPages = Math.ceil(total / limitNum);
+    const items = db.data.songs.slice(startIndex, endIndex);
+    const total = db.data.songs.length;
+    const totalPages = Math.ceil(total / limitNum);
 
-  res.json({
-    items,
-    total,
-    totalPages,
-    page: pageNum,
-    limit: limitNum,
-  });
+    res.json({
+      items,
+      total,
+      totalPages,
+      page: pageNum,
+      limit: limitNum,
+    });
+  } catch (error) {
+    console.error("❌ Error en GET /api/songs:", error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.get("/api/songs/:id", async (req, res) => {
