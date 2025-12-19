@@ -2,9 +2,9 @@
   "games": [
     {
       "id": 1,
-      "title": "The Legend of Zelda: Breath of the Wild",
+      "title": "The Legend of Zelda 3",
       "status": "Completado",
-      "rating": 4.8,
+      "rating": 3.8,
       "notes": "Un juego increíble de mundo abierto",
       "trailerUrl": "https://www.youtube.com/watch?v=1rPxiXXxftE",
       "launchDate": "2017-03-03",
